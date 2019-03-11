@@ -8,18 +8,22 @@ Page({
      * 页面的初始数据
      */
     data: {
-
+        classicData: null
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        classic.getLatest((res)=>{
+        classic.getLatest((res) => {
             this.setData({
-                classicData:res.msg
+                classicData: res.msg
             })
         })
+    },
+
+    onLike:function(event){
+        console.log(event)
     },
 
     /**
