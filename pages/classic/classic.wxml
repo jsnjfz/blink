@@ -1,2 +1,8 @@
-<v-like bind:like="onLike" like="{{classicData.like_status}}" count="{{classicData.fav_nums}}" />
-<v-movie img="{{classicData.image}}" content="{{classicData.content}}"/>
+<view class="container">
+    <view class="header">
+        <v-episode class="episode" index="{{classicData.index}}"/>
+        <v-like class="like" bind:like="onLike" like="{{classicData.like_status}}" count="{{classicData.fav_nums}}"/>
+    </view>
+    <v-movie img="{{classicData.image}}" content="{{classicData.content}}"/>
+    <v-nav title="{{classicData.title}}" first="{{first}}" latest="{{latest}}" class="nav"/>
+</view>
