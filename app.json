@@ -1,6 +1,7 @@
 {
-    "pages": [
-        "pages/classic/classic",
-        "components/like/index"
-    ]
+  "pages": [
+    "pages/classic/classic",
+    "components/like/index"
+  ],
+  "requiredBackgroundModes": ["audio"]
 }

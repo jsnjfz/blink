@@ -1,5 +1,5 @@
-import {ClassicModel} from '../../models/classic.js'
-import {LikeModel} from '../../models/like.js'
+import {ClassicModel} from '../../models/classic'
+import {LikeModel} from '../../models/like'
 
 let classicModel = new ClassicModel()
 let likeModel = new LikeModel()
@@ -12,25 +12,64 @@ Page({
     data: {
         classicData: null,
         latest:true,
-        first:false
+        first:false,
+        likeCount:0,
+        likeStatus:false
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        //数据更新，storage
         classicModel.getLatest((res) => {
+            // this._getLikeStatus(res.msg.id,res.msg.type)
             this.setData({
-                classicData: res.msg
+                classicData: res.msg,
+                likeCount:res.msg.fav_nums,
+                likeStatus:res.msg.like_status
+            })
+        })
+
+    },
+
+    onLike:function(event){
+        // console.log(event)
+        let behavior = event.detail.behavior
+        likeModel.like(behavior,this.data.classicData.id,this.data.classicData.type)
+    },
+
+    onNext:function(event){
+        this._updateClassic('next')
+    },
+
+    onPrevious:function(event){
+        this._updateClassic('previous')
+    },
+
+    _updateClassic:function(nextOrPrevious){
+        let index = this.data.classicData.index
+        classicModel.getClassic(index,nextOrPrevious,(res)=>{
+            this._getLikeStatus(res.id,res.type)
+            // console.log(res)
+            this.setData({
+                classicData:res,
+                latest:classicModel.isLatest(res.index),
+                first:classicModel.isFirst(res.index)
             })
         })
     },
 
-    onLike:function(event){
-        console.log(event)
-        let behavior = event.detail.behavior
-        likeModel.like(behavior,this.data.classicData.id,this.data.classicData.type)
+    _getLikeStatus:function(artID,category){
+        likeModel.getClassicLikeStatus(artID,category,(res)=>{
+            this.setData({
+                likeCount:res.msg.fav_nums,
+                likeStatus:res.msg.like_status
+            })
+        })
     },
+
+
 
     /**
      * 生命周期函数--监听页面初次渲染完成
